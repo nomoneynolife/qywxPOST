@@ -428,7 +428,7 @@ namespace qywxPOST
             }
         }
 
-        private void LoadTasksFromFile() //加载ScheduledTasks.txt到listView1中
+        private void LoadTasksFromFile() // 加载ScheduledTasks.txt到listView1中
         {
             if (File.Exists(tasksFilePath))
             {
@@ -444,43 +444,43 @@ namespace qywxPOST
                             string messageContent = parts[1];
 
                             // 检查任务是否已经存在于 scheduledTasks 列表中
-                            // if (!scheduledTasks.Any(task => task.ScheduledTime == scheduledTime && task.MessageContent == messageContent))
-                            // {
-                            // 查找已存在的任务，如果存在则将其定时器设为 null
-                            ScheduledTask existingTask = scheduledTasks.FirstOrDefault(t =>
-                                t.ScheduledTime == scheduledTime && t.MessageContent == messageContent);
-
-                            if (existingTask != null)
+                            if (!scheduledTasks.Any(task => task.ScheduledTime == scheduledTime && task.MessageContent == messageContent))
                             {
-                                // 将任务添加到列表中，提供现有定时器作为参数
-                                scheduledTasks.Add(new ScheduledTask(scheduledTime, messageContent, existingTask.Timer));
+                                // 查找已存在的任务，如果存在则将其定时器设为 null
+                                ScheduledTask existingTask = scheduledTasks.FirstOrDefault(t =>
+                                    t.ScheduledTime == scheduledTime && t.MessageContent == messageContent);
 
-                                // 将任务添加到 listView1
-                                ListViewItem listItem = new ListViewItem(scheduledTime.ToString());
-                                listItem.SubItems.Add(messageContent);
-                                listView1.Items.Add(listItem);
-                            }
-                            else
-                            {
-                                // 将任务添加到列表中，提供 null 作为定时器参数
-                                scheduledTasks.Add(new ScheduledTask(scheduledTime, messageContent, null));
-
-                                // 将任务添加到 listView1
-                                ListViewItem listItem = new ListViewItem(scheduledTime.ToString());
-                                listItem.SubItems.Add(messageContent);
-
-                                // 如果任务未过期，为任务创建新的定时器
-                                if (scheduledTime >= DateTime.Now)
+                                if (existingTask != null)
                                 {
-                                    long dueTime = (long)(scheduledTime - DateTime.Now).TotalMilliseconds;
-                                    System.Threading.Timer newTimer = new System.Threading.Timer(SendScheduledMessage, messageContent, dueTime, Timeout.Infinite);
-                                    scheduledTasks.Last().Timer = newTimer;
-                                }
+                                    // 将任务添加到列表中，提供现有定时器作为参数
+                                    scheduledTasks.Add(new ScheduledTask(scheduledTime, messageContent, existingTask.Timer));
 
-                                listView1.Items.Add(listItem);
-                                UpdateListView(); // 更新定时器
+                                    // 将任务添加到 listView1
+                                    ListViewItem listItem = new ListViewItem(scheduledTime.ToString());
+                                    listItem.SubItems.Add(messageContent);
+                                    listView1.Items.Add(listItem);
+                                }
+                                else
+                                {
+                                    // 将任务添加到列表中，提供 null 作为定时器参数
+                                    scheduledTasks.Add(new ScheduledTask(scheduledTime, messageContent, null));
+
+                                    // 将任务添加到 listView1
+                                    ListViewItem listItem = new ListViewItem(scheduledTime.ToString());
+                                    listItem.SubItems.Add(messageContent);
+
+                                    // 如果任务未过期，为任务创建新的定时器
+                                    if (scheduledTime >= DateTime.Now)
+                                    {
+                                        long dueTime = (long)(scheduledTime - DateTime.Now).TotalMilliseconds;
+                                        System.Threading.Timer newTimer = new System.Threading.Timer(SendScheduledMessage, messageContent, dueTime, Timeout.Infinite);
+                                        scheduledTasks.Last().Timer = newTimer;
+                                    }
+
+                                    listView1.Items.Add(listItem);
+                                    UpdateListView(); // 更新定时器
+                                }
                             }
-                            //}
                             // 如果任务已存在，则不进行任何处理
                         }
                     }
@@ -537,7 +537,7 @@ namespace qywxPOST
 
         private void buttonFileUpdata_Click(object sender, EventArgs e) //清空listView1列表后重载
         {
-            listView1.Items.Clear(); //清空listView1
+            //listView1.Items.Clear(); //清空listView1
             LoadTasksFromFile();
         }
 
