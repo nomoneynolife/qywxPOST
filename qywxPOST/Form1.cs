@@ -537,8 +537,30 @@ namespace qywxPOST
 
         private void buttonFileUpdata_Click(object sender, EventArgs e) //清空listView1列表后重载
         {
-            //listView1.Items.Clear(); //清空listView1
+            ReloadTasks();
+        }
+
+        private void ReloadTasks() //重载listView1，定时器，scheduledTasks
+        {
+            // 清空 listView1
+            listView1.Items.Clear();
+
+            // 取消所有定时器
+            foreach (ScheduledTask task in scheduledTasks)
+            {
+                task.Timer?.Dispose();
+            }
+
+            // 清空 scheduledTasks 列表
+            scheduledTasks.Clear();
+
+            // 重新加载任务
             LoadTasksFromFile();
+
+            if (checkBoxShowTodayTasks.Checked)
+            {
+                ShowTodayTasks();
+            }
         }
 
         private void checkBoxShowTodayTasks_CheckedChanged(object sender, EventArgs e) //只显示当天任务
@@ -561,6 +583,9 @@ namespace qywxPOST
                         AddTaskToListView(task.ScheduledTime, task.MessageContent);
                     }
                 }
+
+                ReloadTasks();
+
                 // 保存更新后的配置到文件
                 SaveConfiguration();
                 // 当 checkBox1 状态改变时保存到配置文件
