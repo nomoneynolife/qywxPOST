@@ -1,0 +1,9 @@
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe.config
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.Form1.resources
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.Properties.Resources.resources
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.csproj.GenerateResource.Cache
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.exe
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.pdb
+D:\AutoBakNoDelete\Desktop\Projects\VisualStudio\文件备份工具\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\qywxPOST.exe.config
