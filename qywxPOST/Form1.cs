@@ -35,6 +35,8 @@ namespace qywxPOST
         private MenuItem showMenuItem;
         private MenuItem exitMenuItem;
 
+        private List<string> webhookUrls = new List<string>();
+
         public Form1()
         {
             // 使用 Mutex 确保只有一个实例在运行
@@ -86,9 +88,6 @@ namespace qywxPOST
             XDocument doc = XDocument.Load(configFile);
 
             // 使用 LINQ to XML 从 XML 文件中检索值
-            this.WebhookUrl = doc.Descendants("WebhookUrl").FirstOrDefault()?.Value;
-            //textBoxOutput.AppendText($"WebhookUrl: {this.WebhookUrl}" + Environment.NewLine); //打印查看是否异常
-
             string isForcePushString = doc.Descendants("ForcePush").FirstOrDefault()?.Value;
             bool isForcePush;
             if (bool.TryParse(isForcePushString, out isForcePush))
@@ -106,6 +105,33 @@ namespace qywxPOST
             }
 
             checkBoxShowTodayTasks.CheckedChanged += checkBoxShowTodayTasks_CheckedChanged;
+
+            // 从配置文件中读取 MultipleRobots 状态
+            string isMultipleRobotString = doc.Descendants("MultipleRobots").FirstOrDefault()?.Value;
+            bool isMultipleRobot;
+            if (bool.TryParse(isMultipleRobotString, out isMultipleRobot))
+            {
+                checkBoxMultipleRobots.Checked = isMultipleRobot;
+
+                if (isMultipleRobot)
+                {
+                    // 如果启用了多个机器人，从配置文件中加载多个 Webhook URLs
+                    var webhookUrlElements = doc.Descendants("WebhookUrls").Elements("Url");
+                    foreach (var urlElement in webhookUrlElements)
+                    {
+                        string url = urlElement.Value;
+                        webhookUrls.Add(url);
+                        //textBoxOutput.AppendText($"Url: {url}" + Environment.NewLine); //打印查看是否异常
+                    }
+                }
+                else
+                {
+                    // 如果没有启用多个机器人，从配置文件中加载单个 Webhook URL
+                    this.WebhookUrl = doc.Descendants("WebhookUrls").Elements("Url").FirstOrDefault()?.Value;
+                    //textBoxOutput.AppendText($"WebhookUrl: {this.WebhookUrl}" + Environment.NewLine); //打印查看是否异常
+                }
+            }
+            checkBoxMultipleRobots.CheckedChanged += checkBoxMultipleRobots_CheckedChanged;
 
         }
 
@@ -251,15 +277,27 @@ namespace qywxPOST
             {
                 // 尝试发送预定消息
                 string message = state as string;
-
                 using (HttpClient client = new HttpClient())
                 {
                     // 构造 JSON 请求体
                     string jsonBody = $"{{\"msgtype\": \"text\", \"text\": {{\"content\": \"{message}\"}}}}";
-                    HttpResponseMessage response = await client.PostAsync(WebhookUrl, new StringContent(jsonBody, Encoding.UTF8, "application/json"));
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseBody);
+                    HttpResponseMessage response; // 将变量移到外部作用域
+
+                    if (checkBoxMultipleRobots.Checked)
+                    {
+                        // 如果启用了多个机器人，向每个机器人发送消息
+                        foreach (string url in webhookUrls)
+                        {
+                            response = await client.PostAsync(url, new StringContent(jsonBody, Encoding.UTF8, "application/json"));
+                            response.EnsureSuccessStatusCode();
+                        }
+                    }
+                    else
+                    {
+                        // 如果只有一个机器人，向单个机器人发送消息
+                        response = await client.PostAsync(WebhookUrl, new StringContent(jsonBody, Encoding.UTF8, "application/json"));
+                        response.EnsureSuccessStatusCode();
+                    }
 
                     // 使用 Invoke 更新主线程上的 UI 组件
                     Invoke((MethodInvoker)delegate
@@ -294,6 +332,7 @@ namespace qywxPOST
                     });
                 }
             }
+
             catch (Exception ex)
             {
                 // 使用 Invoke 更新主线程上的 UI 组件
@@ -653,8 +692,21 @@ namespace qywxPOST
             doc.Save(configFile);
         }
 
+        private void checkBoxMultipleRobots_CheckedChanged(object sender, EventArgs e)
+        {
+           
+            // 保存更新后的配置到文件
+            SaveConfiguration();
+            // 当 checkBox1 状态改变时保存到配置文件
+            string configFile = "config.ini";
+            XDocument doc = XDocument.Load(configFile);
 
+            // 更新 IsCheckBoxChecked 节点的值
+            doc.Descendants("MultipleRobots").FirstOrDefault()?.SetValue(checkBoxMultipleRobots.Checked.ToString());
 
+            // 保存配置文件
+            doc.Save(configFile);
+        }
 
     }
 }

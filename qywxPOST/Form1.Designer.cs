@@ -42,6 +42,7 @@
             this.checkBoxForcePush = new System.Windows.Forms.CheckBox();
             this.buttonFileUpdata = new System.Windows.Forms.Button();
             this.checkBoxShowTodayTasks = new System.Windows.Forms.CheckBox();
+            this.checkBoxMultipleRobots = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -152,11 +153,23 @@
             this.checkBoxShowTodayTasks.UseVisualStyleBackColor = true;
             this.checkBoxShowTodayTasks.CheckedChanged += new System.EventHandler(this.checkBoxShowTodayTasks_CheckedChanged);
             // 
+            // checkBoxMultipleRobots
+            // 
+            this.checkBoxMultipleRobots.AutoSize = true;
+            this.checkBoxMultipleRobots.Location = new System.Drawing.Point(12, 259);
+            this.checkBoxMultipleRobots.Name = "checkBoxMultipleRobots";
+            this.checkBoxMultipleRobots.Size = new System.Drawing.Size(149, 19);
+            this.checkBoxMultipleRobots.TabIndex = 14;
+            this.checkBoxMultipleRobots.Text = "推送到多个机器人";
+            this.checkBoxMultipleRobots.UseVisualStyleBackColor = true;
+            this.checkBoxMultipleRobots.CheckedChanged += new System.EventHandler(this.checkBoxMultipleRobots_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 386);
+            this.Controls.Add(this.checkBoxMultipleRobots);
             this.Controls.Add(this.checkBoxShowTodayTasks);
             this.Controls.Add(this.buttonFileUpdata);
             this.Controls.Add(this.checkBoxForcePush);
@@ -192,6 +205,7 @@
         private System.Windows.Forms.CheckBox checkBoxForcePush;
         private System.Windows.Forms.Button buttonFileUpdata;
         private System.Windows.Forms.CheckBox checkBoxShowTodayTasks;
+        private System.Windows.Forms.CheckBox checkBoxMultipleRobots;
     }
 }
 
