@@ -121,7 +121,7 @@ namespace qywxPOST
                     {
                         string url = urlElement.Value;
                         webhookUrls.Add(url);
-                        //textBoxOutput.AppendText($"Url: {url}" + Environment.NewLine); //打印查看是否异常
+                        textBoxOutput.AppendText($"Url: {url}" + Environment.NewLine); //打印查看是否异常
                     }
                 }
                 else
@@ -131,7 +131,7 @@ namespace qywxPOST
                     //textBoxOutput.AppendText($"WebhookUrl: {this.WebhookUrl}" + Environment.NewLine); //打印查看是否异常
                 }
             }
-            checkBoxMultipleRobots.CheckedChanged += checkBoxMultipleRobots_CheckedChanged;
+           checkBoxMultipleRobots.CheckedChanged += checkBoxMultipleRobots_CheckedChanged;
 
         }
 
@@ -706,7 +706,52 @@ namespace qywxPOST
 
             // 保存配置文件
             doc.Save(configFile);
+
+            // 检测到 checkBoxMultipleRobots 状态改变时重新加载配置
+            ReloadConfiguration();
         }
+
+        private void ReloadConfiguration() //重载配置
+        {
+            try
+            {
+                // 重新加载配置文件
+                XDocument doc = XDocument.Load("config.ini");
+
+                // 从配置文件中读取 MultipleRobots 状态
+                string isMultipleRobotString = doc.Descendants("MultipleRobots").FirstOrDefault()?.Value;
+                bool isMultipleRobot;
+                if (bool.TryParse(isMultipleRobotString, out isMultipleRobot))
+                {
+                    checkBoxMultipleRobots.Checked = isMultipleRobot;
+
+                    if (isMultipleRobot)
+                    {
+                        // 如果启用了多个机器人，从配置文件中加载多个 Webhook URLs
+                        var webhookUrlElements = doc.Descendants("WebhookUrls").Elements("Url");
+                        webhookUrls.Clear(); // 清空现有的Webhook URLs
+                        foreach (var urlElement in webhookUrlElements)
+                        {
+                            string url = urlElement.Value;
+                            webhookUrls.Add(url);
+                            //textBoxOutput.AppendText($"Url: {url}" + Environment.NewLine); // 打印查看是否异常
+                        }
+                    }
+                    else
+                    {
+                        // 如果没有启用多个机器人，从配置文件中加载单个 Webhook URL
+                        this.WebhookUrl = doc.Descendants("WebhookUrls").Elements("Url").FirstOrDefault()?.Value;
+                        //textBoxOutput.AppendText($"WebhookUrl: {this.WebhookUrl}" + Environment.NewLine); // 打印查看是否异常
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 处理异常情况
+                textBoxOutput.AppendText($"加载配置时发生错误：{ex.Message}" + Environment.NewLine);
+            }
+        }
+
 
     }
 }
