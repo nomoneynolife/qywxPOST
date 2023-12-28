@@ -107,6 +107,8 @@ namespace qywxPOST
             checkBoxShowTodayTasks.CheckedChanged += checkBoxShowTodayTasks_CheckedChanged;
 
             // 从配置文件中读取 MultipleRobots 状态
+
+            // 从配置文件中读取 MultipleRobots 状态
             string isMultipleRobotString = doc.Descendants("MultipleRobots").FirstOrDefault()?.Value;
             bool isMultipleRobot;
             if (bool.TryParse(isMultipleRobotString, out isMultipleRobot))
@@ -121,7 +123,7 @@ namespace qywxPOST
                     {
                         string url = urlElement.Value;
                         webhookUrls.Add(url);
-                        textBoxOutput.AppendText($"Url: {url}" + Environment.NewLine); //打印查看是否异常
+                        //textBoxOutput.AppendText($"Url: {url}" + Environment.NewLine); //打印查看是否异常
                     }
                 }
                 else
@@ -131,7 +133,10 @@ namespace qywxPOST
                     //textBoxOutput.AppendText($"WebhookUrl: {this.WebhookUrl}" + Environment.NewLine); //打印查看是否异常
                 }
             }
-           checkBoxMultipleRobots.CheckedChanged += checkBoxMultipleRobots_CheckedChanged;
+            // 启用事件处理程序
+            checkBoxMultipleRobots.CheckedChanged += checkBoxMultipleRobots_CheckedChanged;
+            // 手动调用事件处理程序，处理相关逻辑
+            checkBoxMultipleRobots_CheckedChanged(checkBoxMultipleRobots, EventArgs.Empty);
 
         }
 
